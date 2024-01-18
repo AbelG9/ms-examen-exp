@@ -94,8 +94,13 @@ public class EnterprisesServiceImpl implements EnterprisesService {
 
     @Override
     public ResponseBase delete(Integer id) {
-
-    return null;
+        Optional<EnterprisesEntity> enterprises = enterprisesRepository.findById(id);
+        if (enterprises.isPresent()) {
+            EnterprisesEntity enterprises1 = getEntityDelete(enterprises.get());
+            return new ResponseBase(Constants.CODE_SUCCESS, Constants.MESS_SUCCESS, Optional.of(enterprises1));
+        } else {
+            return new ResponseBase(Constants.CODE_ERROR_EXIST, Constants.MESS_NON_DATA, Optional.empty());
+        }
     }
 
     private EnterprisesEntity getEntity(RequestEnterprises requestEnterprises){
@@ -117,13 +122,14 @@ public class EnterprisesServiceImpl implements EnterprisesService {
         return enterprisesEntity;
     }
     private EnterprisesEntity getEntityDelete(EnterprisesEntity enterprisesEntity){
-
-        return null;
+        enterprisesEntity.setStatus(Constants.STATUS_INACTIVE);
+        enterprisesEntity.setUserDelete(Constants.AUDIT_ADMIN);
+        enterprisesEntity.setDateDelete(getTimestamp());
+        return enterprisesEntity;
     }
 
     private EnterprisesTypeEntity getEnterprisesType(RequestEnterprises requestEnterprises){
         EnterprisesTypeEntity typeEntity = new EnterprisesTypeEntity();
-
         typeEntity.setIdEnterprisesType(requestEnterprises.getEnterprisesTypeEntity());
         return typeEntity;
     }
