@@ -15,12 +15,18 @@ public class EnterprisesController {
         this.enterprisesService = enterprisesService;
     }
 
+    @GetMapping("{numero}")
+    public ResponseBase getInfoSunat(@PathVariable String numero) {
+        ResponseBase responseBase = enterprisesService.getInfoSunat(numero);
+        return responseBase;
+    }
+
     @PostMapping
     public ResponseBase createEnterprise(@RequestBody RequestEnterprises requestEnterprises){
         ResponseBase responseBase = enterprisesService.createEnterprise(requestEnterprises);
         return responseBase;
     }
-    @GetMapping("/{doc}")
+    @GetMapping("dat/{doc}")
     public ResponseBase findOne(@PathVariable String doc){
         ResponseBase responseBase = enterprisesService.findOneEnterprise(doc);
         return responseBase;

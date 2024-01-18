@@ -20,6 +20,7 @@ public class Constants {
 
     public static final String MESS_ERROR_NOT_UPDATE_PERSON ="Error: No se ejecuto la actualización, Persona no Existe";
     public static final String MESS_NON_DATA_RENIEC="No existe Registros en el API de RENIEC";
+    public static final String MESS_NON_DATA_SUNAT="No existe Registros en el API de SUNAT";
     //data
     public static final Integer LENGTH_RUC=11;
     public static final Integer LENGTH_DNI=8;

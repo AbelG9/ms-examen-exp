@@ -5,6 +5,7 @@ import com.codigo.msexamenexp.aggregates.response.ResponseBase;
 
 
 public interface EnterprisesService {
+    ResponseBase getInfoSunat(String numero);
     ResponseBase createEnterprise(RequestEnterprises requestEnterprises);
     ResponseBase findOneEnterprise(String doc);
     ResponseBase  findAllEnterprises();

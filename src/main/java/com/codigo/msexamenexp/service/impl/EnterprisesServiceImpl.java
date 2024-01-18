@@ -7,11 +7,13 @@ import com.codigo.msexamenexp.aggregates.response.ResponseSunat;
 import com.codigo.msexamenexp.entity.DocumentsTypeEntity;
 import com.codigo.msexamenexp.entity.EnterprisesEntity;
 import com.codigo.msexamenexp.entity.EnterprisesTypeEntity;
+import com.codigo.msexamenexp.feignClient.SunatClient;
 import com.codigo.msexamenexp.repository.DocumentsTypeRepository;
 import com.codigo.msexamenexp.repository.EnterprisesRepository;
 import com.codigo.msexamenexp.service.EnterprisesService;
 import com.codigo.msexamenexp.util.EnterprisesValidations;
 import com.codigo.msexamenexp.util.Util;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -25,13 +27,29 @@ public class EnterprisesServiceImpl implements EnterprisesService {
     private final DocumentsTypeRepository typeRepository;
     private final Util util;
 
-    public EnterprisesServiceImpl(EnterprisesRepository enterprisesRepository, EnterprisesValidations enterprisesValidations, DocumentsTypeRepository typeRepository, Util util) {
+    private final SunatClient sunatClient;
+
+    public EnterprisesServiceImpl(EnterprisesRepository enterprisesRepository, EnterprisesValidations enterprisesValidations, DocumentsTypeRepository typeRepository, Util util, SunatClient sunatClient) {
         this.enterprisesRepository = enterprisesRepository;
         this.enterprisesValidations = enterprisesValidations;
         this.typeRepository = typeRepository;
         this.util = util;
+        this.sunatClient = sunatClient;
     }
 
+    @Value("${token.api.sunat}")
+    private String tokenSunat;
+
+
+    @Override
+    public ResponseBase getInfoSunat(String numero) {
+        ResponseSunat sunat = getExecutionSunat(numero);
+        if (sunat != null) {
+            return new ResponseBase(Constants.CODE_SUCCESS, Constants.MESS_SUCCESS, Optional.of(sunat));
+        } else {
+            return new ResponseBase(Constants.CODE_ERROR_DATA_NOT, Constants.MESS_NON_DATA_SUNAT, Optional.empty());
+        }
+    }
 
     @Override
     public ResponseBase createEnterprise(RequestEnterprises requestEnterprises) {
@@ -49,7 +67,6 @@ public class EnterprisesServiceImpl implements EnterprisesService {
     public ResponseBase findOneEnterprise(String doc) {
         EnterprisesEntity enterprisesEntity = enterprisesRepository.findByNumDocument(doc);
         return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS, Optional.of(enterprisesEntity));
-
     }
 
     @Override
@@ -122,7 +139,8 @@ public class EnterprisesServiceImpl implements EnterprisesService {
         return timestamp;
     }
     public ResponseSunat getExecutionSunat(String numero){
-
-        return null;
+        String authorization = "Bearer "+tokenSunat;
+        ResponseSunat sunat = sunatClient.getInfoSunat(numero, authorization);
+        return sunat;
     }
 }
