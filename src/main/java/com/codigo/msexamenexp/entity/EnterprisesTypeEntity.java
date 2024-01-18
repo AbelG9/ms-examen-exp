@@ -5,14 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
+@NamedQuery(name = "EnterprisesTypeEntity.findByCodType", query = "select a from EnterprisesTypeEntity a where a.codType=:codType")
 @Entity
 @Getter
 @Setter
 @Table(name = "enterprises_type")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EnterprisesTypeEntity extends Audit {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_enterprises_type")
@@ -23,6 +22,4 @@ public class EnterprisesTypeEntity extends Audit {
     private String descType;
     @Column(name = "status",nullable = false)
     private int status;
-
-
 }

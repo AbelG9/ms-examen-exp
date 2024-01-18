@@ -2,7 +2,6 @@ package com.codigo.msexamenexp.util;
 
 
 import com.codigo.msexamenexp.aggregates.constants.Constants;
-import com.codigo.msexamenexp.aggregates.enums.ETypeDocuments;
 import com.codigo.msexamenexp.aggregates.request.RequestEnterprises;
 import com.codigo.msexamenexp.entity.DocumentsTypeEntity;
 import com.codigo.msexamenexp.repository.DocumentsTypeRepository;
@@ -25,16 +24,15 @@ public class EnterprisesValidations {
         if(requestEnterprises == null){
             return false;
         }
-        DocumentsTypeEntity documentType = typeRepository.findByCodType(Constants.COD_TYPE_RUC);
-        log.info("DATO: " + Integer.valueOf(documentType.getCodType()) + " DATO2" + requestEnterprises.getEnterprisesTypeEntity());
-        if(requestEnterprises.getDocumentsTypeEntity() != Integer.valueOf(documentType.getCodType())
+        log.info("DATO1: " + requestEnterprises.getDocumentsTypeEntity()+ " - DATO2: " + typeRepository.findByCodType(Constants.COD_TYPE_RUC).getIdDocumentsType());
+        if(requestEnterprises.getDocumentsTypeEntity() != typeRepository.findByCodType(Constants.COD_TYPE_RUC).getIdDocumentsType()
             || requestEnterprises.getNumDocument().length() != Constants.LENGTH_RUC){
             return false;
         }
         if(isNullOrEmpty(requestEnterprises.getNumDocument())){
             return false;
         }
-        if(extistEnterprise(requestEnterprises.getNumDocument())){
+        if(existsEnterprise(requestEnterprises.getNumDocument())){
             return false;
         }
 
@@ -44,8 +42,7 @@ public class EnterprisesValidations {
         if(requestEnterprises == null){
             return false;
         }
-        DocumentsTypeEntity documentType = typeRepository.findByCodType(Constants.COD_TYPE_RUC);
-        if(requestEnterprises.getDocumentsTypeEntity() != Integer.valueOf(documentType.getCodType())
+        if(requestEnterprises.getDocumentsTypeEntity() != typeRepository.findByCodType(Constants.COD_TYPE_RUC).getIdDocumentsType()
                 || requestEnterprises.getNumDocument().length() != Constants.LENGTH_RUC){
             return false;
         }
@@ -54,9 +51,8 @@ public class EnterprisesValidations {
         }
         return true;
     }
-    public boolean extistEnterprise(String numDocument){
-        boolean extistEnterprise = enterprisesRepository.existsByNumDocument(numDocument);
-        return extistEnterprise;
+    public boolean existsEnterprise(String numDocument){
+        return enterprisesRepository.existsByNumDocument(numDocument);
     }
     public boolean isNullOrEmpty(String data){
         return data == null || data.isEmpty();
