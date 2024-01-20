@@ -1,4 +1,4 @@
-package com.codigo.msexamenexp.feignClient;
+package com.codigo.msexamenexp.feignclient;
 
 import com.codigo.msexamenexp.aggregates.response.ResponseSunat;
 import org.springframework.cloud.openfeign.FeignClient;

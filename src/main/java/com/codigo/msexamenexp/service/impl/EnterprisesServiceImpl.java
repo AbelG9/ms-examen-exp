@@ -8,7 +8,7 @@ import com.codigo.msexamenexp.config.RedisService;
 import com.codigo.msexamenexp.entity.DocumentsTypeEntity;
 import com.codigo.msexamenexp.entity.EnterprisesEntity;
 import com.codigo.msexamenexp.entity.EnterprisesTypeEntity;
-import com.codigo.msexamenexp.feignClient.SunatClient;
+import com.codigo.msexamenexp.feignclient.SunatClient;
 import com.codigo.msexamenexp.repository.DocumentsTypeRepository;
 import com.codigo.msexamenexp.repository.EnterprisesRepository;
 import com.codigo.msexamenexp.repository.EnterprisesTypeRepository;
@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,7 +65,7 @@ public class EnterprisesServiceImpl implements EnterprisesService {
         if(validate){
             EnterprisesEntity enterprisesEntity = getEntity(requestEnterprises);
             enterprisesRepository.save(enterprisesEntity);
-            String redisData = util.convertToJsonEntity(enterprisesEntity);
+            String redisData = Util.convertToJsonEntity(enterprisesEntity);
             redisService.saveKeyValue(Constants.REDIS_KEY_INFO_SUNAT+enterprisesEntity.getNumDocument(),redisData,Integer.valueOf(timeExpirationSunatInfo));
             return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS, Optional.of(enterprisesEntity));
         }else{
@@ -76,12 +77,12 @@ public class EnterprisesServiceImpl implements EnterprisesService {
     public ResponseBase findOneEnterprise(String doc) {
         String redisCache = redisService.getValueByKey(Constants.REDIS_KEY_INFO_SUNAT+doc);
         if(redisCache != null){
-            EnterprisesEntity enterprisesEntity = util.convertFromJson(redisCache, EnterprisesEntity.class);
+            EnterprisesEntity enterprisesEntity = Util.convertFromJson(redisCache, EnterprisesEntity.class);
             return new ResponseBase(Constants.CODE_SUCCESS, Constants.MESS_SUCCESS, Optional.of(enterprisesEntity));
         } else {
             EnterprisesEntity enterprisesEntity = enterprisesRepository.findByNumDocument(doc);
             if (enterprisesEntity != null) {
-                String redisData = util.convertToJsonEntity(enterprisesEntity);
+                String redisData = Util.convertToJsonEntity(enterprisesEntity);
                 redisService.saveKeyValue(Constants.REDIS_KEY_INFO_SUNAT+doc,redisData,Integer.valueOf(timeExpirationSunatInfo));
                 return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS, Optional.of(enterprisesEntity));
             } else {
@@ -92,7 +93,7 @@ public class EnterprisesServiceImpl implements EnterprisesService {
 
     @Override
     public ResponseBase findAllEnterprises() {
-        Optional allEnterprises = Optional.of(enterprisesRepository.findAll());
+        Optional<List<EnterprisesEntity>> allEnterprises = Optional.of(enterprisesRepository.findAll());
         if(allEnterprises.isPresent()){
             return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS,allEnterprises);
         }
@@ -163,23 +164,19 @@ public class EnterprisesServiceImpl implements EnterprisesService {
     }
 
     private EnterprisesTypeEntity getEnterprisesType(RequestEnterprises requestEnterprises){
-        EnterprisesTypeEntity typeEntity = enterprisesTypeRepository.findById(requestEnterprises.getEnterprisesTypeEntity()).get();
-        return typeEntity;
+        return enterprisesTypeRepository.findById(requestEnterprises.getEnterprisesTypeEntity()).get();
     }
 
     private DocumentsTypeEntity getDocumentsType(RequestEnterprises requestEnterprises){
-        DocumentsTypeEntity typeEntity = documentsTypeRepository.findByCodType(Constants.COD_TYPE_RUC);
-        return typeEntity;
+        return documentsTypeRepository.findById(requestEnterprises.getDocumentsTypeEntity()).get();
     }
 
     private Timestamp getTimestamp(){
         long currentTime = System.currentTimeMillis();
-        Timestamp timestamp = new Timestamp(currentTime);
-        return timestamp;
+        return new Timestamp(currentTime);
     }
     public ResponseSunat getExecutionSunat(String numero){
         String authorization = "Bearer "+tokenSunat;
-        ResponseSunat responseSunat = sunatClient.getInfoSunat(numero, authorization);
-        return responseSunat;
+        return sunatClient.getInfoSunat(numero, authorization);
     }
 }

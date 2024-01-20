@@ -3,7 +3,6 @@ package com.codigo.msexamenexp.util;
 
 import com.codigo.msexamenexp.aggregates.constants.Constants;
 import com.codigo.msexamenexp.aggregates.request.RequestEnterprises;
-import com.codigo.msexamenexp.entity.DocumentsTypeEntity;
 import com.codigo.msexamenexp.repository.DocumentsTypeRepository;
 import com.codigo.msexamenexp.repository.EnterprisesRepository;
 import lombok.extern.slf4j.Slf4j;

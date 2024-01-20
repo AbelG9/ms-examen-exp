@@ -1,6 +1,7 @@
 package com.codigo.msexamenexp.aggregates.constants;
 
 public class Constants {
+    private Constants(){}
     //CODE
     public static final Integer CODE_SUCCESS=1001;
     public static final Integer CODE_ERROR_DATA_INPUT=1002;

@@ -1,6 +1,5 @@
 package com.codigo.msexamenexp.util;
 
-import com.codigo.msexamenexp.aggregates.response.ResponseSunat;
 import com.codigo.msexamenexp.entity.EnterprisesEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
