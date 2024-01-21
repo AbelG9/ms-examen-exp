@@ -17,33 +17,27 @@ public class EnterprisesController {
 
     @GetMapping("{numero}")
     public ResponseBase getInfoSunat(@PathVariable String numero) {
-        ResponseBase responseBase = enterprisesService.getInfoSunat(numero);
-        return responseBase;
+        return enterprisesService.getInfoSunat(numero);
     }
 
     @PostMapping
     public ResponseBase createEnterprise(@RequestBody RequestEnterprises requestEnterprises){
-        ResponseBase responseBase = enterprisesService.createEnterprise(requestEnterprises);
-        return responseBase;
+        return enterprisesService.createEnterprise(requestEnterprises);
     }
     @GetMapping("dat/{doc}")
     public ResponseBase findOne(@PathVariable String doc){
-        ResponseBase responseBase = enterprisesService.findOneEnterprise(doc);
-        return responseBase;
+        return enterprisesService.findOneEnterprise(doc);
     }
     @GetMapping()
     public ResponseBase findAll(){
-        ResponseBase responseBase = enterprisesService.findAllEnterprises();
-        return responseBase;
+        return enterprisesService.findAllEnterprises();
     }
     @PatchMapping("/{id}")
     public ResponseBase updateEnterprises(@PathVariable int id, @RequestBody RequestEnterprises requestEnterprises){
-        ResponseBase responseBase = enterprisesService.updateEnterprise(id,requestEnterprises);
-        return responseBase;
+        return enterprisesService.updateEnterprise(id,requestEnterprises);
     }
     @DeleteMapping("/{id}")
     public ResponseBase deleteEnterprises(@PathVariable int id){
-        ResponseBase responseBase = enterprisesService.delete(id);
-        return responseBase;
+        return enterprisesService.deleteEnterprise(id);
     }
 }

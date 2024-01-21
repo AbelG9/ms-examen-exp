@@ -65,11 +65,9 @@ public class EnterprisesServiceImpl implements EnterprisesService {
         if(validate){
             EnterprisesEntity enterprisesEntity = getEntity(requestEnterprises);
             enterprisesRepository.save(enterprisesEntity);
-            String redisData = Util.convertToJsonEntity(enterprisesEntity);
-            redisService.saveKeyValue(Constants.REDIS_KEY_INFO_SUNAT+enterprisesEntity.getNumDocument(),redisData,Integer.valueOf(timeExpirationSunatInfo));
             return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS, Optional.of(enterprisesEntity));
         }else{
-            return new ResponseBase(Constants.CODE_ERROR_DATA_INPUT,Constants.MESS_ERROR_DATA_NOT_VALID,null);
+            return new ResponseBase(Constants.CODE_ERROR_DATA_INPUT,Constants.MESS_ERROR_DATA_NOT_VALID,Optional.empty());
         }
     }
 
@@ -94,7 +92,7 @@ public class EnterprisesServiceImpl implements EnterprisesService {
     @Override
     public ResponseBase findAllEnterprises() {
         Optional<List<EnterprisesEntity>> allEnterprises = Optional.of(enterprisesRepository.findAll());
-        if(allEnterprises.isPresent()){
+        if(allEnterprises.isPresent() && allEnterprises.get().size() > 0){
             return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS,allEnterprises);
         }
         return new ResponseBase(Constants.CODE_ERROR_DATA_NOT,Constants.MESS_ZERO_ROWS,Optional.empty());
@@ -119,7 +117,7 @@ public class EnterprisesServiceImpl implements EnterprisesService {
     }
 
     @Override
-    public ResponseBase delete(Integer id) {
+    public ResponseBase deleteEnterprise(Integer id) {
         Optional<EnterprisesEntity> enterprises = enterprisesRepository.findById(id);
         if (enterprises.isPresent()) {
             EnterprisesEntity enterprisesDelete = getEntityDelete(enterprises.get());

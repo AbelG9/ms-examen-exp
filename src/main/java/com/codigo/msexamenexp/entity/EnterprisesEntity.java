@@ -3,13 +3,17 @@ package com.codigo.msexamenexp.entity;
 import com.codigo.msexamenexp.entity.common.Audit;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "enterprises")
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EnterprisesEntity extends Audit {
     @Id
@@ -30,7 +34,4 @@ public class EnterprisesEntity extends Audit {
     @ManyToOne
     @JoinColumn(name = "document_type_id_document_type",nullable = false)
     private DocumentsTypeEntity documentsTypeEntity;
-
-
-
 }

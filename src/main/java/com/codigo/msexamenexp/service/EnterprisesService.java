@@ -10,5 +10,5 @@ public interface EnterprisesService {
     ResponseBase findOneEnterprise(String doc);
     ResponseBase  findAllEnterprises();
     ResponseBase updateEnterprise(Integer id, RequestEnterprises requestEnterprises);
-    ResponseBase delete(Integer id);
+    ResponseBase deleteEnterprise(Integer id);
 }

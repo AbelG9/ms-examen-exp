@@ -3,13 +3,17 @@ package com.codigo.msexamenexp.entity;
 import com.codigo.msexamenexp.entity.common.Audit;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 @NamedQuery(name = "DocumentsTypeEntity.findByCodType", query = "select a from DocumentsTypeEntity a where a.codType=:codType")
 @Entity
 @Getter
 @Setter
 @Table(name = "documents_type")
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DocumentsTypeEntity extends Audit {
     @Id
