@@ -92,7 +92,7 @@ public class EnterprisesServiceImpl implements EnterprisesService {
     @Override
     public ResponseBase findAllEnterprises() {
         Optional<List<EnterprisesEntity>> allEnterprises = Optional.of(enterprisesRepository.findAll());
-        if(allEnterprises.isPresent() && allEnterprises.get().size() > 0){
+        if(allEnterprises.isPresent() && !allEnterprises.get().isEmpty()){
             return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS,allEnterprises);
         }
         return new ResponseBase(Constants.CODE_ERROR_DATA_NOT,Constants.MESS_ZERO_ROWS,Optional.empty());
