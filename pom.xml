@@ -17,7 +17,6 @@
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
 		<sonar.host.url>http://localhost:9000/</sonar.host.url>
-		<sonar.token>sqp_30a9384b0a5c618074c4115c2a8d35af7f1e2059</sonar.token>
 		<sonar.projectKey>exa2</sonar.projectKey>
 		<sonar.projectName>exa2</sonar.projectName>
 
